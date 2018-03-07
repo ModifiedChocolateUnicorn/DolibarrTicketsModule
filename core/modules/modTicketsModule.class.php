@@ -1,6 +1,7 @@
 <?php
 /* Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2018 SuperAdmin
+ * Copyright (C) 2018 PopPlace
+ * Copyright (C) 2018 ModifiedChocolateUnicorn
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,12 +65,12 @@ class modTicketsModule extends DolibarrModules
 		// Module label (no space allowed), used if translation string 'ModuleTicketsModuleName' not found (MyModue is name of module).
 		$this->name = preg_replace('/^mod/i','',get_class($this));
 		// Module description, used if translation string 'ModuleTicketsModuleDesc' not found (MyModue is name of module).
-		$this->description = "TicketsModuleDescription";
+		$this->description = "Système de gestions des tickets journées et demies journées pour un espace de coworking";
 		// Used only if file README.md and README-LL.md not found.
 		$this->descriptionlong = "TicketsModuleDescription (Long)";
 
-		$this->editor_name = 'Editor name';
-		$this->editor_url = 'https://www.example.com';
+		$this->editor_name = 'PopPlace';
+		$this->editor_url = 'https://github.com/popplace';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
 		$this->version = '1.0';
