@@ -1,4 +1,5 @@
--- Copyright (C) 2018 SuperAdmin
+-- Copyright (C) 2018 PopPlace
+-- Copyright (C) 2018 ModifiedChocolateUnicorn
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -15,10 +16,13 @@
 
 
 -- BEGIN MODULEBUILDER INDEXES
-ALTER TABLE llx_ticketsmodule_myobject ADD INDEX idx_fieldobject (fieldobject);
+ALTER TABLE llx_ticketsmodule_ticket_bank ADD INDEX idx_ticket_bank (rowid);
 -- END MODULEBUILDER INDEXES
 
---ALTER TABLE llx_ticketsmodule_myobject ADD UNIQUE INDEX uk_ticketsmodule_myobject_fieldxyz(fieldx, fieldy);
+ALTER TABLE llx_ticketsmodule_ticket_bank ADD CONSTRAINT fk_ticket_bank_fk_societe FOREIGN KEY (fk_societe) REFERENCES llx_societe (rowid);
+-- adding a foreign key on societe rowid
 
---ALTER TABLE llx_ticketsmodule_myobject ADD CONSTRAINT llx_ticketsmodule_myobject_field_id FOREIGN KEY (fk_field) REFERENCES llx_myotherobject(rowid);
+--ALTER TABLE llx_ticketsmodule_ticket_bank ADD UNIQUE INDEX uk_ticketsmodule_myobject_fieldxyz(fieldx, fieldy);
+
+--ALTER TABLE llx_ticketsmodule_ticket_bank ADD CONSTRAINT llx_ticketsmodule_ticket_bank_field_id FOREIGN KEY (fk_field) REFERENCES llx_myotherobject(rowid);
 
