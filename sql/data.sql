@@ -14,3 +14,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+INSERT INTO llx_ticketsmodule_ticket_bank (fk_societe) SELECT rowid FROM llx_societe;
+
+UPDATE llx_ticketsmodule_ticket_bank SET date_creation = NOW() ;
