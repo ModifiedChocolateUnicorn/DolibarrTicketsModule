@@ -207,21 +207,21 @@ class modTicketsModule extends DolibarrModules
 
 		$r=0;
 		$this->rights[$r][0] = $this->numero + $r;	// Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read myobject of TicketsModule';	// Permission label
+		$this->rights[$r][1] = 'Read ticketsmoduleticketbank of TicketsModule';	// Permission label
 		$this->rights[$r][3] = 1; 					// Permission by default for new user (0/1)
 		$this->rights[$r][4] = 'read';				// In php code, permission will be checked by test if ($user->rights->ticketsmodule->level1->level2)
 		$this->rights[$r][5] = '';				    // In php code, permission will be checked by test if ($user->rights->ticketsmodule->level1->level2)
 
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r;	// Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update myobject of TicketsModule';	// Permission label
+		$this->rights[$r][1] = 'Create/Update ticketsmoduleticketbank of TicketsModule';	// Permission label
 		$this->rights[$r][3] = 1; 					// Permission by default for new user (0/1)
 		$this->rights[$r][4] = 'write';				// In php code, permission will be checked by test if ($user->rights->ticketsmodule->level1->level2)
 		$this->rights[$r][5] = '';				    // In php code, permission will be checked by test if ($user->rights->ticketsmodule->level1->level2)
 
 		$r++;
 		$this->rights[$r][0] = $this->numero + $r;	// Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete myobject of TicketsModule';	// Permission label
+		$this->rights[$r][1] = 'Delete ticketsmoduleticketbank of TicketsModule';	// Permission label
 		$this->rights[$r][3] = 1; 					// Permission by default for new user (0/1)
 		$this->rights[$r][4] = 'delete';				// In php code, permission will be checked by test if ($user->rights->ticketsmodule->level1->level2)
 		$this->rights[$r][5] = '';				    // In php code, permission will be checked by test if ($user->rights->ticketsmodule->level1->level2)
@@ -252,10 +252,10 @@ class modTicketsModule extends DolibarrModules
 		/* BEGIN MODULEBUILDER LEFTMENU MYOBJECT
 		$this->menu[$r++]=array(	'fk_menu'=>'fk_mainmenu=ticketsmodule',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 								'type'=>'left',			                // This is a Left menu entry
-								'titre'=>'List MyObject',
+								'titre'=>'List TicketsModuleTicketBank',
 								'mainmenu'=>'ticketsmodule',
-								'leftmenu'=>'ticketsmodule_myobject_list',
-								'url'=>'/ticketsmodule/myobject_list.php',
+								'leftmenu'=>'ticketsmodule_ticketsmoduleticketbank_list',
+								'url'=>'/ticketsmodule/ticket_bank_list.php',
 								'langs'=>'ticketsmodule@ticketsmodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>1000+$r,
 								'enabled'=>'$conf->ticketsmodule->enabled',  // Define condition to show or hide menu entry. Use '$conf->ticketsmodule->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
@@ -264,17 +264,48 @@ class modTicketsModule extends DolibarrModules
 								'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
 		$this->menu[$r++]=array(	'fk_menu'=>'fk_mainmenu=ticketsmodule,fk_leftmenu=ticketsmodule',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 								'type'=>'left',			                // This is a Left menu entry
-								'titre'=>'New MyObject',
+								'titre'=>'New TicketsModuleTicketBank',
 								'mainmenu'=>'ticketsmodule',
-								'leftmenu'=>'ticketsmodule_myobject_new',
-								'url'=>'/ticketsmodule/myobject_page.php?action=create',
+								'leftmenu'=>'ticketsmodule_ticketsmoduleticketbank_new',
+								'url'=>'/ticketsmodule/ticket_bank_page.php?action=create',
 								'langs'=>'ticketsmodule@ticketsmodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>1000+$r,
 								'enabled'=>'$conf->ticketsmodule->enabled',  // Define condition to show or hide menu entry. Use '$conf->ticketsmodule->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
 								'perms'=>'1',			                // Use 'perms'=>'$user->rights->ticketsmodule->level1->level2' if you want your menu with a permission rules
 								'target'=>'',
 								'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
-		END MODULEBUILDER LEFTMENU MYOBJECT */
+		*/
+
+		$this->menu[$r++]=array(
+                				'fk_menu'=>'fk_mainmenu=ticketsmodule',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+								'type'=>'left',			                // This is a Left menu entry
+								'titre'=>'List TicketBank Rows',
+								'mainmenu'=>'ticketsmodule',
+								'leftmenu'=>'ticketsmodule_ticket_bank',
+								'url'=>'/ticketsmodule/ticket_bank_list.php',
+								'langs'=>'ticketsmodule@ticketsmodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+								'position'=>1100+$r,
+								'enabled'=>'$conf->ticketsmodule->enabled',  // Define condition to show or hide menu entry. Use '$conf->ticketsmodule->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+								'perms'=>'1',			                // Use 'perms'=>'$user->rights->ticketsmodule->level1->level2' if you want your menu with a permission rules
+								'target'=>'',
+								'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
+		$this->menu[$r++]=array(
+                				'fk_menu'=>'fk_mainmenu=ticketsmodule,fk_leftmenu=ticketsmodule_ticket_bank',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+								'type'=>'left',			                // This is a Left menu entry
+								'titre'=>'Add TicketBank Row',
+								'mainmenu'=>'ticketsmodule',
+								'leftmenu'=>'ticketsmodule_ticket_bank',
+								'url'=>'/ticketsmodule/ticket_bank_card.php?action=create',
+								'langs'=>'ticketsmodule@ticketsmodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+								'position'=>1100+$r,
+								'enabled'=>'$conf->ticketsmodule->enabled',  // Define condition to show or hide menu entry. Use '$conf->ticketsmodule->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+								'perms'=>'1',			                // Use 'perms'=>'$user->rights->ticketsmodule->level1->level2' if you want your menu with a permission rules
+								'target'=>'',
+								'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
+               		
+		/* */
+               		
+		/* END MODULEBUILDER LEFTMENU MYOBJECT */
 
 
 		// Exports
@@ -284,17 +315,17 @@ class modTicketsModule extends DolibarrModules
 		/*
 		$langs->load("ticketsmodule@ticketsmodule");
 		$this->export_code[$r]=$this->rights_class.'_'.$r;
-		$this->export_label[$r]='MyObjectLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
-		$this->export_icon[$r]='myobject@ticketsmodule';
-		$keyforclass = 'MyObject'; $keyforclassfile='/mymobule/class/myobject.class.php'; $keyforelement='myobject';
+		$this->export_label[$r]='TicketsModuleTicketBankLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
+		$this->export_icon[$r]='ticketsmoduleticketbank@ticketsmodule';
+		$keyforclass = 'TicketsModuleTicketBank'; $keyforclassfile='/mymobule/class/ticketsmoduleticketbank.class.php'; $keyforelement='ticketsmoduleticketbank';
 		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
-		$keyforselect='myobject'; $keyforaliasextra='extra'; $keyforelement='myobject';
+		$keyforselect='ticketsmoduleticketbank'; $keyforaliasextra='extra'; $keyforelement='ticketsmoduleticketbank';
 		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
 		//$this->export_dependencies_array[$r]=array('mysubobject'=>'ts.rowid', 't.myfield'=>array('t.myfield2','t.myfield3')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		$this->export_sql_start[$r]='SELECT DISTINCT ';
-		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'myobject as t';
+		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'ticketsmoduleticketbank as t';
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
-		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('myobject').')';
+		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('ticketsmoduleticketbank').')';
 		$r++; */
 		/* END MODULEBUILDER EXPORT MYOBJECT */
 	}
