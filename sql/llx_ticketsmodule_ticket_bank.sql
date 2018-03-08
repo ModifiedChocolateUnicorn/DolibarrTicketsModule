@@ -17,14 +17,15 @@
 
 CREATE TABLE llx_ticketsmodule_ticket_bank(
 	-- BEGIN MODULEBUILDER FIELDS
-	rowid INTEGER AUTO_INCREMENT PRIMARY KEY,
-	entity INTEGER DEFAULT 1 NOT NULL,
-	label VARCHAR(255),
-	qty INTEGER,
-	status INTEGER,
-	date_creation DATETIME NOT NULL,
-	tms TIMESTAMP NOT NULL,
-	import_key VARCHAR(14),
+	rowid integer AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+	ref varchar(128) NOT NULL, 
+	entity integer DEFAULT 1 NOT NULL, 
+	label varchar(255), 
+	qty double(24,8), 
+	date_creation datetime NOT NULL, 
+	tms timestamp NOT NULL, 
+	import_key varchar(14), 
+	status INTEGER NOT NULL,
 	-- END MODULEBUILDER FIELDS
 	-- BEGIN MANUALLY ADDED FIELDS
 	fk_societe integer,

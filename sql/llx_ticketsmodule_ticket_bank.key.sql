@@ -16,7 +16,10 @@
 
 
 -- BEGIN MODULEBUILDER INDEXES
-ALTER TABLE llx_ticketsmodule_ticket_bank ADD INDEX idx_ticket_bank (rowid);
+ALTER TABLE llx_ticketsmodule_ticket_bank ADD INDEX idx_ticketsmodule_ticket_bank_rowid (rowid);
+ALTER TABLE llx_ticketsmodule_ticket_bank ADD INDEX idx_ticketsmodule_ticket_bank_ref (ref);
+ALTER TABLE llx_ticketsmodule_ticket_bank ADD INDEX idx_ticketsmodule_ticket_bank_entity (entity);
+ALTER TABLE llx_ticketsmodule_ticket_bank ADD INDEX idx_ticketsmodule_ticket_bank_fk_societe (fk_societe);
 -- END MODULEBUILDER INDEXES
 
 ALTER TABLE llx_ticketsmodule_ticket_bank ADD CONSTRAINT fk_ticket_bank_fk_societe FOREIGN KEY (fk_societe) REFERENCES llx_societe (rowid);
