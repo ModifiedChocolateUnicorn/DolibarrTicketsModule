@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
- * Copyright (C) 2018 SuperAdmin
+ * Copyright (C) ---Put here your own copyright and developer email---
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
 
 use Luracast\Restler\RestException;
 
-dol_include_once('/ticketsmodule/class/myobject.class.php');
+dol_include_once('/ticketsmodule/class/ticket_bank.class.php');
 
 
 
 /**
- * \file    ticketsmodule/class/api_ticketsmodule.class.php
+ * \file    class/api_ticketsmodule.class.php
  * \ingroup ticketsmodule
- * \brief   File for API management of myobject.
+ * \brief   File for API management of ticket_bank.
  */
 
 /**
- * API class for ticketsmodule myobject
+ * API class for ticketsmodule ticket_bank
  *
  * @smart-auto-routing false
  * @access protected
@@ -46,9 +46,9 @@ class TicketsModuleApi extends DolibarrApi
 
 
     /**
-     * @var MyObject $myobject {@type MyObject}
+     * @var Ticket_Bank $ticket_bank {@type Ticket_Bank}
      */
-    public $myobject;
+    public $ticket_bank;
 
     /**
      * Constructor
@@ -60,43 +60,43 @@ class TicketsModuleApi extends DolibarrApi
     {
 		global $db, $conf;
 		$this->db = $db;
-        $this->myobject = new MyObject($this->db);
+        $this->ticket_bank = new Ticket_Bank($this->db);
     }
 
     /**
-     * Get properties of a myobject object
+     * Get properties of a ticket_bank object
      *
-     * Return an array with myobject informations
+     * Return an array with ticket_bank informations
      *
-     * @param 	int 	$id ID of myobject
+     * @param 	int 	$id ID of ticket_bank
      * @return 	array|mixed data without useless information
 	 *
-     * @url	GET myobjects/{id}
+     * @url	GET ticket_banks/{id}
      * @throws 	RestException
      */
     function get($id)
     {
-		if(! DolibarrApiAccess::$user->rights->myobject->read) {
+		if(! DolibarrApiAccess::$user->rights->ticket_bank->read) {
 			throw new RestException(401);
 		}
 
-        $result = $this->myobject->fetch($id);
+        $result = $this->ticket_bank->fetch($id);
         if( ! $result ) {
-            throw new RestException(404, 'MyObject not found');
+            throw new RestException(404, 'Ticket_Bank not found');
         }
 
-		if( ! DolibarrApi::_checkAccessToResource('myobject',$this->myobject->id)) {
+		if( ! DolibarrApi::_checkAccessToResource('ticket_bank',$this->ticket_bank->id)) {
 			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
-		return $this->_cleanObjectDatas($this->myobject);
+		return $this->_cleanObjectDatas($this->ticket_bank);
     }
 
 
     /**
-     * List myobjects
+     * List ticket_banks
      *
-     * Get a list of myobjects
+     * Get a list of ticket_banks
      *
      * @param string	       $sortfield	        Sort field
      * @param string	       $sortorder	        Sort order
@@ -107,7 +107,7 @@ class TicketsModuleApi extends DolibarrApi
      *
      * @throws RestException
      *
-     * @url	GET /myobjects/
+     * @url	GET /ticket_banks/
      */
     function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $sqlfilters = '') {
         global $db, $conf;
@@ -121,7 +121,7 @@ class TicketsModuleApi extends DolibarrApi
 
         $sql = "SELECT s.rowid";
         if ((!DolibarrApiAccess::$user->rights->societe->client->voir && !$socid) || $search_sale > 0) $sql .= ", sc.fk_soc, sc.fk_user"; // We need these fields in order to filter by sale (including the case where the user can only see his prospects)
-        $sql.= " FROM ".MAIN_DB_PREFIX."myobject as s";
+        $sql.= " FROM ".MAIN_DB_PREFIX."ticket_bank as s";
 
         if ((!DolibarrApiAccess::$user->rights->societe->client->voir && !$socid) || $search_sale > 0) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc"; // We need this table joined to the select in order to filter by sale
         $sql.= ", ".MAIN_DB_PREFIX."c_stcomm as st";
@@ -131,7 +131,7 @@ class TicketsModuleApi extends DolibarrApi
         //if ($mode == 1) $sql.= " AND s.client IN (1, 3)";
         //if ($mode == 2) $sql.= " AND s.client IN (2, 3)";
 
-        $sql.= ' AND s.entity IN ('.getEntity('myobject').')';
+        $sql.= ' AND s.entity IN ('.getEntity('ticket_bank').')';
         if ((!DolibarrApiAccess::$user->rights->societe->client->voir && !$socid) || $search_sale > 0) $sql.= " AND s.fk_soc = sc.fk_soc";
         if ($socid) $sql.= " AND s.fk_soc = ".$socid;
         if ($search_sale > 0) $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
@@ -168,104 +168,104 @@ class TicketsModuleApi extends DolibarrApi
             while ($i < $num)
             {
                 $obj = $db->fetch_object($result);
-                $myobject_static = new MyObject($db);
-                if($myobject_static->fetch($obj->rowid)) {
-                    $obj_ret[] = parent::_cleanObjectDatas($myobject_static);
+                $ticket_bank_static = new Ticket_Bank($db);
+                if($ticket_bank_static->fetch($obj->rowid)) {
+                    $obj_ret[] = parent::_cleanObjectDatas($ticket_bank_static);
                 }
                 $i++;
             }
         }
         else {
-            throw new RestException(503, 'Error when retrieve myobject list');
+            throw new RestException(503, 'Error when retrieve ticket_bank list');
         }
         if( ! count($obj_ret)) {
-            throw new RestException(404, 'No myobject found');
+            throw new RestException(404, 'No ticket_bank found');
         }
 		return $obj_ret;
     }
 
     /**
-     * Create myobject object
+     * Create ticket_bank object
      *
      * @param array $request_data   Request datas
-     * @return int  ID of myobject
+     * @return int  ID of ticket_bank
      *
-     * @url	POST myobjects/
+     * @url	POST ticket_banks/
      */
     function post($request_data = NULL)
     {
-        if(! DolibarrApiAccess::$user->rights->myobject->create) {
+        if(! DolibarrApiAccess::$user->rights->ticket_bank->create) {
 			throw new RestException(401);
 		}
         // Check mandatory fields
         $result = $this->_validate($request_data);
 
         foreach($request_data as $field => $value) {
-            $this->myobject->$field = $value;
+            $this->ticket_bank->$field = $value;
         }
-        if( ! $this->myobject->create(DolibarrApiAccess::$user)) {
+        if( ! $this->ticket_bank->create(DolibarrApiAccess::$user)) {
             throw new RestException(500);
         }
-        return $this->myobject->id;
+        return $this->ticket_bank->id;
     }
 
     /**
-     * Update myobject
+     * Update ticket_bank
      *
-     * @param int   $id             Id of myobject to update
+     * @param int   $id             Id of ticket_bank to update
      * @param array $request_data   Datas
      * @return int
      *
-     * @url	PUT myobjects/{id}
+     * @url	PUT ticket_banks/{id}
      */
     function put($id, $request_data = NULL)
     {
-        if(! DolibarrApiAccess::$user->rights->myobject->create) {
+        if(! DolibarrApiAccess::$user->rights->ticket_bank->create) {
 			throw new RestException(401);
 		}
 
-        $result = $this->myobject->fetch($id);
+        $result = $this->ticket_bank->fetch($id);
         if( ! $result ) {
-            throw new RestException(404, 'MyObject not found');
+            throw new RestException(404, 'Ticket_Bank not found');
         }
 
-		if( ! DolibarrApi::_checkAccessToResource('myobject',$this->myobject->id)) {
+		if( ! DolibarrApi::_checkAccessToResource('ticket_bank',$this->ticket_bank->id)) {
 			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
         foreach($request_data as $field => $value) {
-            $this->myobject->$field = $value;
+            $this->ticket_bank->$field = $value;
         }
 
-        if($this->myobject->update($id, DolibarrApiAccess::$user))
+        if($this->ticket_bank->update($id, DolibarrApiAccess::$user))
             return $this->get($id);
 
         return false;
     }
 
     /**
-     * Delete myobject
+     * Delete ticket_bank
      *
-     * @param   int     $id   MyObject ID
+     * @param   int     $id   Ticket_Bank ID
      * @return  array
      *
-     * @url	DELETE myobject/{id}
+     * @url	DELETE ticket_bank/{id}
      */
     function delete($id)
     {
-        if(! DolibarrApiAccess::$user->rights->myobject->supprimer) {
+        if(! DolibarrApiAccess::$user->rights->ticket_bank->supprimer) {
 			throw new RestException(401);
 		}
-        $result = $this->myobject->fetch($id);
+        $result = $this->ticket_bank->fetch($id);
         if( ! $result ) {
-            throw new RestException(404, 'MyObject not found');
+            throw new RestException(404, 'Ticket_Bank not found');
         }
 
-		if( ! DolibarrApi::_checkAccessToResource('myobject',$this->myobject->id)) {
+		if( ! DolibarrApi::_checkAccessToResource('ticket_bank',$this->ticket_bank->id)) {
 			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
-        if( !$this->myobject->delete($id))
+        if( !$this->ticket_bank->delete($id))
         {
             throw new RestException(500);
         }
@@ -273,7 +273,7 @@ class TicketsModuleApi extends DolibarrApi
          return array(
             'success' => array(
                 'code' => 200,
-                'message' => 'MyObject deleted'
+                'message' => 'Ticket_Bank deleted'
             )
         );
 
@@ -289,12 +289,12 @@ class TicketsModuleApi extends DolibarrApi
      */
     function _validate($data)
     {
-        $myobject = array();
-        foreach (MyObjectApi::$FIELDS as $field) {
+        $ticket_bank = array();
+        foreach (Ticket_BankApi::$FIELDS as $field) {
             if (!isset($data[$field]))
                 throw new RestException(400, "$field field missing");
-            $myobject[$field] = $data[$field];
+            $ticket_bank[$field] = $data[$field];
         }
-        return $myobject;
+        return $ticket_bank;
     }
 }
