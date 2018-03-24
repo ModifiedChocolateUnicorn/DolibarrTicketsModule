@@ -37,6 +37,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 // adding the required classes for our triggers to work
 DOL_DOCUMENT_ROOT.'custom/ticketsmodule/class/ticket_bank.class.php';
 DOL_DOCUMENT_ROOT.'societe/class/societe.class.php';
+DOL_DOCUMENT_ROOT.'core/compta/facture/class/facture.class.php';
 
 /**
  *  Class of triggers for TicketsModule module
@@ -250,7 +251,7 @@ class InterfaceWorkflows extends DolibarrTriggers
 		    case 'LINECONTRACT_DELETE':
 
 		        // Bills
-		    case 'BILL_CREATE':
+			case 'BILL_CREATE':
 		    case 'BILL_CLONE':
 		    case 'BILL_MODIFY':
 		    case 'BILL_VALIDATE':
@@ -258,7 +259,59 @@ class InterfaceWorkflows extends DolibarrTriggers
 		    case 'BILL_SENTBYMAIL':
 		    case 'BILL_CANCEL':
 		    case 'BILL_DELETE':
-		    case 'BILL_PAYED':
+			case 'BILL_PAYED':
+			global $db;
+			
+			$LatestInterestingBill = 0;
+			$ClientToCredit = 0;
+			$BillPrivateNote = '';
+
+			// searching the DB for latest paid facture (invoice) where private note is not null
+			$getLatestInterestingPaidBillSQL=$db->query('SELECT rowid, fk_soc, note_private FROM llx_facture WHERE paye = 1 && note_private IS NOT NULL ORDER BY rowid DESC LIMIT 1;');
+			if ($getLatestInterestingPaidBillSQL) {
+				$num = $db->num_rows($getLatestInterestingPaidBillSQL);
+				$i = 0;
+				if ($num) {
+					while ($i < $num) {
+						$obj = $db->fetch_object($getLatestInterestingPaidBillSQL);
+						if ($obj) {
+							$LatestInterestingBill += $obj->rowid;
+							$ClientToCredit += $obj->fk_soc;
+							$BillPrivateNote .= $obj->note_private;
+						}
+						$i++;
+					}
+				}
+			}
+
+			// use something to manage to use the private_note to extract how many tickets of each type must be credited onto the client ticket account.
+			function UsePVNoteToCreditCustomer($FullPrivateNote, $TicketTimePeriodContainer, $Customer) {
+				global $db;
+				$BrokenNote = preg_split('/\s/',$FullPrivateNote);
+				$howManyElements = count($BrokenNote);
+				for($i = 0; $i < ($howManyElements); $i+=2) {
+					if(is_numeric($BrokenNote[$i])) {
+						$TimePeriodSelectorCounter = $i + 1;
+						if (array_key_exists($BrokenNote[$TimePeriodSelectorCounter], $TicketTimePeriodContainer)) {
+							$AssocArrayKey = $BrokenNote[$TimePeriodSelectorCounter];
+
+							$CreditTicketsSQL = 'UPDATE llx_ticketsmodule_ticket_bank SET '. $TicketTimePeriodContainer[$AssocArrayKey] . ' = '. $TicketTimePeriodContainer[$AssocArrayKey] .' + '. $BrokenNote[$i] .' WHERE fk_societe = '. $Customer .' ';
+
+							$db->query($CreditTicketsSQL);
+							$db->commit();
+
+							$retourInfos = $db->error();
+
+						} else {
+						}
+					} else {
+					}
+				}
+			}
+
+			$DBRowsToUse = array("fd"=>"full_day_ticket_stored", "hd"=>"half_day_ticket_stored");
+			UsePVNoteToCreditCustomer($BillPrivateNote,$DBRowsToUse,$ClientToCredit);
+			
 		    case 'LINEBILL_INSERT':
 		    case 'LINEBILL_UPDATE':
 		    case 'LINEBILL_DELETE':
