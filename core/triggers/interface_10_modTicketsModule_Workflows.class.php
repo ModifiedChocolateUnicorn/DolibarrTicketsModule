@@ -133,7 +133,7 @@ class InterfaceWorkflows extends DolibarrTriggers
 		    case 'GROUP_MODIFY':
 		    case 'GROUP_DELETE':
 
-		        // Companies
+		      	// Companies
 			case 'COMPANY_CREATE':
 				// we need to declare db before using it
 			global $db;
@@ -261,12 +261,12 @@ class InterfaceWorkflows extends DolibarrTriggers
 		    case 'BILL_DELETE':
 			case 'BILL_PAYED':
 			global $db;
-			
+
 			$LatestInterestingBill = 0;
 			$ClientToCredit = 0;
 			$BillPrivateNote = '';
 
-			// searching the DB for latest paid facture (invoice) where private note is not null
+				// searching the DB for latest paid facture (invoice) where private note is not null
 			$getLatestInterestingPaidBillSQL=$db->query('SELECT rowid, fk_soc, note_private FROM llx_facture WHERE paye = 1 && note_private IS NOT NULL ORDER BY rowid DESC LIMIT 1;');
 			if ($getLatestInterestingPaidBillSQL) {
 				$num = $db->num_rows($getLatestInterestingPaidBillSQL);
@@ -284,7 +284,7 @@ class InterfaceWorkflows extends DolibarrTriggers
 				}
 			}
 
-			// use something to manage to use the private_note to extract how many tickets of each type must be credited onto the client ticket account.
+				// use something to manage to use the private_note to extract how many tickets of each type must be credited onto the client ticket account.
 			function UsePVNoteToCreditCustomer($FullPrivateNote, $TicketTimePeriodContainer, $Customer) {
 				global $db;
 				$BrokenNote = preg_split('/\s/',$FullPrivateNote);
@@ -300,8 +300,6 @@ class InterfaceWorkflows extends DolibarrTriggers
 							$db->query($CreditTicketsSQL);
 							$db->commit();
 
-							$retourInfos = $db->error();
-
 						} else {
 						}
 					} else {
@@ -311,7 +309,7 @@ class InterfaceWorkflows extends DolibarrTriggers
 
 			$DBRowsToUse = array("fd"=>"full_day_ticket_stored", "hd"=>"half_day_ticket_stored");
 			UsePVNoteToCreditCustomer($BillPrivateNote,$DBRowsToUse,$ClientToCredit);
-			
+
 		    case 'LINEBILL_INSERT':
 		    case 'LINEBILL_UPDATE':
 		    case 'LINEBILL_DELETE':

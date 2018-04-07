@@ -1,7 +1,7 @@
 # TICKETSMODULE FOR <a href="https://www.dolibarr.org">DOLIBARR ERP CRM</a>
 
 ## Features
-Description...
+Ce module permet de gérer les tickets (demie journée et journée par défaut) pour un espace de coworking. 
 
 <!--
 ![Screenshot ticketsmodule](img/screenshot_ticketsmodule.png?raw=true "TicketsModule"){imgmd}
