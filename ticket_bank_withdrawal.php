@@ -78,7 +78,7 @@ if ($getCustomersWithTicketsSQL) {
   <select name="company_id">
    <?php
     for($i = 0; $i < (count($CompaniesIDStorage)); $i++) {
-      echo "<option value=". ($CompaniesIDStorage[$i]) .">". ($CompaniesNameStorage[$i]) ."</option>";
+      echo '<option value='. ($CompaniesIDStorage[$i]) .'>'. ($CompaniesNameStorage[$i]) .'</option>';
     }
    ?>
   </select>
@@ -110,11 +110,11 @@ if(isset($_POST['company_id']) && $_POST['company_id'] != '' && isset($_POST['ti
   $_SESSION['TicketTypeTable'] = $TicketTypeTable;
   $_SESSION['TicketNumber'] = $TicketNumber;
 
-  echo "<p>Sélectionnez le nombre de tickets que vous voulez retirer à ". $WithdrawingCompany ." </p>";
+  echo '<p>Sélectionnez le nombre de tickets que vous voulez retirer à '. $WithdrawingCompany ." </p>";
   ?>
   <form method="POST">
     <?php
-      echo "<input name=withdrawn_tickets type=number value= 1 min = 1 max=". $TicketNumber .">";
+      echo '<input name=withdrawn_tickets type=number value= 1 min = 1 max='. $TicketNumber .'>';
     ?>
     <input type="submit" value="Retrait de tickets" class="button">
   </form>

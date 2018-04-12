@@ -69,7 +69,7 @@ if ($getCustomersWhoSpentTicketsSQL) {
 
 <?php
 for($i = 0; $i < count($todayCustomersStorage); $i++) {
-  echo "<p>". $todayCustomersStorage[$i] ."</p>";
+  echo '<p>'. $todayCustomersStorage[$i] .'</p>';
 }
 ?>
 </div>
