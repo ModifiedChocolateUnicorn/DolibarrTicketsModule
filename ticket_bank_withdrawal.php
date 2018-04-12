@@ -127,10 +127,10 @@ if (isset($_POST['withdrawn_tickets']) && $_POST['withdrawn_tickets'] != '') {
     $RemainingTickets = $_SESSION['TicketNumber'] - $_POST['withdrawn_tickets'];
     $TicketsWithdrawalSQL=$db->query('UPDATE llx_ticketsmodule_ticket_bank SET '. $_SESSION['TicketTypeTable'] .' = '. $RemainingTickets .', last_visit = NOW() WHERE fk_societe = '. $_SESSION['CompanyId'] .';');
     $db->commit();
-    echo "<h1>BRAVO vous avez effectué un retrait de ". $_POST['withdrawn_tickets'] ." tickets !</h1>";
+    echo "<p>Le retrait de ". $_POST['withdrawn_tickets'] ." tickets a bien été effectué !</p>";
 
   } else {
-    echo "<h1>Oups, on dirait que quelque chose s'est mal passé ! </h1> ";
+    echo "<p>Oups, on dirait que quelque chose s'est mal passé ! </p> ";
   }
   unset($_SESSION['CompanyId']);
   unset($_SESSION['TicketTypeTable']);
